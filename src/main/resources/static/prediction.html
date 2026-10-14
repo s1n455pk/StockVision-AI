@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StockVision AI | Prediction</title>
+<style>
+:root{--bg:#080d18;--panel:#111a2b;--border:#253249;--text:#edf3ff;--muted:#8fa2bd;--green:#32d6a0;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 6%;border-bottom:1px solid var(--border);background:#0b1220;position:sticky;top:0;z-index:5}
+.brand{font-size:22px;font-weight:800;white-space:nowrap}.brand span{color:var(--green)}.status{font-size:12px;color:var(--green)}
+.main-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.nav-link{color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:9px;font-size:13px;font-weight:700}.nav-link:hover,.nav-link.active{color:var(--text);background:#1b2940}.nav-link.active{box-shadow:inset 0 -2px var(--green)}
+main{max-width:1100px;margin:auto;padding:32px 22px 50px}.eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}h1{font-size:clamp(28px,4vw,42px);margin:10px 0}.subtitle{color:var(--muted);line-height:1.6}
+.search{display:flex;gap:10px;margin:24px 0;max-width:560px}input,button{border-radius:10px;padding:12px 14px;font-size:14px}input{flex:1;min-width:0;background:var(--panel);color:var(--text);border:1px solid var(--border)}button{border:0;background:var(--green);color:#07151a;font-weight:800;cursor:pointer}button:disabled{opacity:.6;cursor:wait}
+#message{min-height:20px;color:var(--muted);font-size:13px;margin:12px 0}#message.error{color:var(--red)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:20px;min-width:0}.label{color:var(--muted);font-size:12px}.value{font-size:clamp(20px,2.5vw,30px);font-weight:800;margin:13px 0 8px;overflow-wrap:anywhere}.green{color:var(--green)}.red{color:var(--red)}.small{font-size:12px;color:var(--muted);line-height:1.6}.section-title{font-size:20px;margin:30px 0 14px}.chart-card{padding:20px}canvas{display:block;width:100%;height:280px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.notice{border:1px solid #66552c;background:#211d13;color:#e7d5a5;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.6;margin:18px 0}
+footer{border-top:1px solid var(--border);color:var(--muted);text-align:center;padding:24px;font-size:12px;line-height:1.7}
+@media(max-width:760px){header{flex-wrap:wrap}.main-nav{order:3;width:100%}}@media(max-width:560px){header{padding:16px 18px}main{padding:24px 14px}.search{flex-direction:column}.grid,.metrics{grid-template-columns:1fr}.card{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Stock<span>Vision</span> AI</div>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a class="nav-link" href="/">Market Overview</a>
+    <a class="nav-link active" href="/prediction.html">AI Prediction</a>
+  </nav>
+  <div class="status">● EXPERIMENTAL MODEL</div>
+</header>
+<main>
+  <div class="eyebrow">Machine learning analysis</div>
+  <h1>AI Stock Price Prediction</h1>
+  <p class="subtitle">Run the existing Random Forest model for a supported ticker. Model estimates are uncertain and must not be treated as guaranteed future prices.</p>
+  <div class="search">
+    <input id="symbol" value="TCS.NS" aria-label="Stock symbol" placeholder="Enter ticker, e.g. TCS.NS">
+    <button id="predictBtn" onclick="loadPrediction()">Predict Price ↗</button>
+  </div>
+  <div id="message" role="status">Loading prediction…</div>
+  <div class="notice">Market price is the latest available daily close from the data provider. Predicted price is a model estimate, not live market data or financial advice.</div>
+  <section class="grid">
+    <div class="card"><div class="label">Stock Symbol</div><div class="value" id="stock">—</div><div class="small" id="date">Latest trading date: —</div></div>
+    <div class="card"><div class="label">Latest Close</div><div class="value" id="latest">—</div><div class="small">Observed latest available close</div></div>
+    <div class="card"><div class="label">Predicted Next Close</div><div class="value green" id="predicted">—</div><div class="small">Experimental estimate</div></div>
+    <div class="card"><div class="label">Predicted Return</div><div class="value" id="change">—</div><div class="small">Model-estimated percentage</div></div>
+  </section>
+  <h2 class="section-title">Latest Close vs Predicted Close</h2>
+  <section class="card chart-card"><canvas id="chart" aria-label="Latest and predicted close comparison"></canvas><div class="small">This compares two values; it is not a historical price chart.</div></section>
+  <h2 class="section-title">Model Performance</h2>
+  <section class="metrics">
+    <div class="card"><div class="label">Model</div><div class="value" id="model">—</div></div>
+    <div class="card"><div class="label">Test MAE</div><div class="value" id="mae">—</div><div class="small">Historical test error in price units</div></div>
+    <div class="card"><div class="label">Test RMSE</div><div class="value" id="rmse">—</div><div class="small">Historical test error in price units</div></div>
+  </section>
+</main>
+<footer>Educational demonstration only. Predictions are uncertain and are not financial advice.<br>Market data may be delayed; model errors do not guarantee future accuracy.</footer>
+<script>
+const $=id=>document.getElementById(id);
+const money=v=>v==null||!Number.isFinite(Number(v))?"—":"₹"+Number(v).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+function showMessage(t,e=false){$("message").textContent=t;$("message").className=e?"error":""}
+async function loadPrediction(){
+ const symbol=$("symbol").value.trim().toUpperCase();
+ if(!symbol){showMessage("Please enter a stock symbol.",true);return}
+ $("predictBtn").disabled=true;showMessage("Fetching latest data and generating model estimate…");
+ try{
+  const r=await fetch("/api/stock/predict?symbol="+encodeURIComponent(symbol));
+  if(!r.ok){let d=await r.text();throw new Error(d||"Request failed ("+r.status+")")}
+  const d=await r.json();
+  $("stock").textContent=d.stock_symbol;$("date").textContent="Latest trading date: "+(d.last_trading_date||"—");
+  $("latest").textContent=money(d.latest_close);$("predicted").textContent=money(d.predicted_next_close);
+  const pct=Number(d.predicted_return_percent);$("change").textContent=Number.isFinite(pct)?(pct>0?"+":"")+pct.toFixed(3)+"%":"—";
+  $("change").className="value "+(pct<0?"red":"green");$("model").textContent=d.model_type||"—";
+  $("mae").textContent=money(d.mae);$("rmse").textContent=money(d.rmse);
+  drawChart(Number(d.latest_close),Number(d.predicted_next_close));showMessage(d.note||"Prediction loaded. Estimate is experimental.");
+ }catch(e){showMessage("Could not load prediction: "+e.message,true)}
+ finally{$("predictBtn").disabled=false}
+}
+function drawChart(a,b){
+ const c=$("chart"),r=c.getBoundingClientRect();if(!r.width||!Number.isFinite(a)||!Number.isFinite(b))return;
+ const ratio=devicePixelRatio||1,h=280,w=r.width;c.width=w*ratio;c.height=h*ratio;
+ const x=c.getContext("2d");x.setTransform(ratio,0,0,ratio,0,0);x.clearRect(0,0,w,h);
+ const min=Math.min(a,b)*.995,max=Math.max(a,b)*1.005,span=max-min||1,y=v=>30+(max-v)/span*155,x1=w*.28,x2=w*.72;
+ x.strokeStyle="#253249";for(let i=0;i<4;i++){x.beginPath();x.moveTo(10,35+i*48);x.lineTo(w-10,35+i*48);x.stroke()}
+ x.strokeStyle="#32d6a0";x.lineWidth=3;x.beginPath();x.moveTo(x1,y(a));x.lineTo(x2,y(b));x.stroke();
+ [[x1,a,"Latest Close"],[x2,b,"Predicted Close"]].forEach(([xx,v,label])=>{x.beginPath();x.arc(xx,y(v),6,0,Math.PI*2);x.fillStyle="#32d6a0";x.fill();x.fillStyle="#edf3ff";x.font="bold 13px Segoe UI";x.textAlign="center";x.fillText(money(v),xx,Math.max(18,y(v)-16));x.fillStyle="#8fa2bd";x.font="12px Segoe UI";x.fillText(label,xx,240)})
+}
+$("symbol").addEventListener("keydown",e=>{if(e.key==="Enter")loadPrediction()});window.addEventListener("resize",()=>drawChart(Number($("latest").textContent.replace(/[₹,]/g,"")),Number($("predicted").textContent.replace(/[₹,]/g,""))));loadPrediction();
+</script>
+</body></html>
