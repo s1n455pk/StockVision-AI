@@ -1,307 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StockVision AI | Market Dashboard</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StockVision AI | Indian Markets</title>
 <style>
-:root{--bg:#080d18;--panel:#111a2b;--panel2:#0d1524;--border:#253249;--text:#edf3ff;--muted:#8fa2bd;--green:#32d6a0;--red:#ff8585;--blue:#6c8cff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif}
-header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 6%;border-bottom:1px solid var(--border);background:#0b1220;position:sticky;top:0;z-index:5}
-.brand{font-size:22px;font-weight:800;white-space:nowrap}.brand span{color:var(--green)}.status{font-size:12px;color:var(--green)}
-.main-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.nav-link{color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:9px;font-size:13px;font-weight:700}.nav-link:hover,.nav-link.active{color:var(--text);background:#1b2940}.nav-link.active{box-shadow:inset 0 -2px var(--green)}
-main{max-width:1320px;margin:auto;padding:30px 22px 44px}.eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}
-h1{font-size:clamp(27px,4vw,40px);margin:10px 0}.subtitle{color:var(--muted);line-height:1.6;margin:0}.topbar{display:flex;justify-content:space-between;align-items:end;gap:22px;flex-wrap:wrap}
-.search{display:flex;gap:10px;margin:22px 0 12px;max-width:620px;flex:1;min-width:min(100%,300px)}input,button,select{border-radius:10px;padding:12px 14px;font-size:14px}
-input,select{color:var(--text);background:var(--panel);border:1px solid var(--border);min-width:0}input{flex:1}button{border:0;color:#07151a;background:var(--green);font-weight:800;cursor:pointer}button:disabled{opacity:.55;cursor:wait}
-.secondary{background:#1b2940;color:var(--text);border:1px solid var(--border)}.search-results{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.suggestion{padding:7px 10px;font-size:12px}
-#message{color:var(--muted);margin:12px 0 18px;min-height:18px;font-size:13px}#message.error{color:var(--red)}
-.notice{border:1px solid #66552c;background:#211d13;color:#e7d5a5;border-radius:10px;padding:11px 14px;font-size:12px;line-height:1.5;margin:16px 0 22px}
-.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:30px 0 14px;font-size:19px}.section-title small{font-size:12px;color:var(--muted);font-weight:400}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:19px;min-width:0}.label{color:var(--muted);font-size:12px}.value{font-size:clamp(20px,2.3vw,28px);font-weight:800;margin:12px 0 7px;overflow-wrap:anywhere}.small{font-size:11px;color:var(--muted);line-height:1.5}.green{color:var(--green)}.red{color:var(--red)}
-.price-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0}.price-heading .big-price{font-size:clamp(30px,5vw,44px);font-weight:850;letter-spacing:-1px}.pill{font-size:12px;border-radius:99px;padding:6px 10px;background:#123529;color:var(--green)}.pill.red{background:#3a2027;color:var(--red)}
-.chart-layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px}.chart-card{padding:18px}.chart-controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.period-btn{background:#18243a;color:var(--muted);padding:8px 11px;font-size:12px;border:1px solid var(--border)}.period-btn.active{background:var(--green);color:#07151a;border-color:var(--green)}canvas{width:100%;height:290px;display:block}
-.stats-list{display:grid;gap:0}.stat-row{display:flex;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--border);font-size:13px}.stat-row:last-child{border-bottom:0}.stat-row span:first-child{color:var(--muted)}.stat-row span:last-child{text-align:right;font-weight:650;overflow-wrap:anywhere}
-.fundamentals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.fundamental .value{font-size:21px}.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.company-summary{color:var(--muted);font-size:13px;line-height:1.7;max-height:180px;overflow:auto}
-.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.muted{color:var(--muted)}footer{border-top:1px solid var(--border);color:var(--muted);text-align:center;padding:24px;font-size:12px;line-height:1.7}
-@media(max-width:980px){.grid,.fundamentals{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-layout{grid-template-columns:1fr}}
-@media(max-width:760px){header{flex-wrap:wrap}.main-nav{order:3;width:100%}.status{margin-left:auto}}
-@media(max-width:560px){header{padding:16px 18px}.status{max-width:120px;text-align:right}main{padding:24px 14px}.grid,.fundamentals,.metrics,.company-grid{grid-template-columns:1fr}.search{min-width:100%;flex-direction:column}.price-heading{align-items:flex-start;flex-direction:column}.card{padding:16px}canvas{height:250px}}
+:root{--bg:#101111;--panel:#171a1a;--panel2:#202424;--line:#2b3030;--text:#f2f5f4;--muted:#a1aaa7;--green:#00c896;--red:#ff654f;--accent:#b8f5df}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px Inter,Segoe UI,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#111313;border-bottom:1px solid var(--line);padding:15px max(5%,calc((100% - 1440px)/2));display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.brand{font-size:23px;font-weight:850;white-space:nowrap}.brand span{color:var(--green)}nav{display:flex;gap:22px;flex:1}nav a{color:var(--muted);text-decoration:none;font-weight:650}nav a.active,nav a:hover{color:white}
+.search{position:relative;display:flex;gap:8px;min-width:min(100%,340px)}input{background:#171a1a;border:1px solid #3a4140;color:white;border-radius:11px;padding:12px 14px;min-width:0;width:100%;outline:none}input:focus{border-color:var(--green)}button{cursor:pointer;border:0;border-radius:10px;background:var(--green);color:#06241b;font-weight:800;padding:11px 15px}.suggestions{position:absolute;top:48px;left:0;right:0;background:#202424;border:1px solid var(--line);border-radius:10px;z-index:9;overflow:hidden}.suggestions button{display:block;width:100%;text-align:left;border-radius:0;background:transparent;color:white;padding:12px}.suggestions button:hover{background:#303837}
+main{max-width:1440px;margin:auto;padding:26px 5% 50px}.ticker{display:flex;gap:32px;overflow:auto;white-space:nowrap;padding:15px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px}.ticker b{color:white;margin-right:8px}.up{color:var(--green)!important}.down{color:var(--red)!important}
+h1{font-size:27px;margin:28px 0 5px}.sub{color:var(--muted);margin:0 0 25px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:30px 0 14px}.section-head h2{font-size:20px;margin:0}.section-head small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stock-card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px;min-width:0}.stock-card{cursor:pointer;transition:.15s}.stock-card:hover{border-color:#4a6c61;transform:translateY(-2px)}
+.logo-box{width:48px;height:48px;border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px;flex:0 0 48px;border:1px solid rgba(255,255,255,.12)}
+.logo-box{padding:0;position:relative;display:flex;align-items:center;justify-content:center}
+.logo-box img{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:left center;padding:0;margin:0;border-radius:6px}
+.logo-fallback{font-size:14px;font-weight:900;color:#24312d;letter-spacing:-.5px}
+.stock-row .logo-box{width:40px;height:40px;flex-basis:40px;margin:0;padding:0}
+.stock-row .logo-box img{width:100%;height:100%;padding:0;object-fit:cover;object-position:left center}
+.row-company{display:flex;align-items:center;gap:10px;min-width:0}
+.row-company>div:last-child{min-width:0}
+.symbol{font-weight:800;font-size:15px}.company{color:var(--muted);font-size:12px;margin-top:5px;min-height:18px}.price{font-size:22px;font-weight:850;margin:20px 0 5px}.change{font-size:13px;font-weight:700}.meta{font-size:11px;color:var(--muted);margin-top:9px}
+.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:16px}.rows{display:grid;gap:9px}.stock-row{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer}.stock-row:hover{border-color:#4a6c61}.right{text-align:right}.muted{color:var(--muted)}.empty{color:var(--muted);padding:20px;text-align:center}.hero{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.hero-price{font-size:36px;font-weight:900}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.metric{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px}.metric .val{font-size:20px;font-weight:800;margin-top:10px}.chart-wrap{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px}canvas{width:100%;height:270px;display:block}.periods{display:flex;gap:7px;margin-bottom:10px}.periods button{background:#2a3130;color:#dce5e1;padding:8px 12px}.periods button.active{background:var(--green);color:#06241b}.detail-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-top:16px}.notice{background:#272318;border:1px solid #62532e;color:#e5d6a7;padding:12px;border-radius:10px;font-size:12px;margin:18px 0}
+
+.back-btn{background:#252c2a;color:var(--text);border:1px solid var(--line);margin:4px 0 22px}
+.detail-company{display:flex;align-items:center;gap:14px}.detail-company .logo-box{width:52px;height:52px;flex-basis:52px;margin:0}.detail-company h1{margin:5px 0 0;font-size:25px}.detail-symbol{color:var(--muted);font-size:13px}
+.detail-price-line{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;margin:17px 0}.detail-price-line strong{font-size:36px;font-weight:900}.detail-price-line .muted{font-size:12px}
+.main-chart{margin-top:8px;padding:20px}.chart-toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.periods{display:flex;gap:6px;flex-wrap:wrap}.periods button,.chart-types button{background:#252c2a;color:#dce5e1;padding:8px 11px;border:1px solid var(--line)}.periods button.active,.chart-types button.active{background:var(--green);color:#06241b}.chart-types{display:flex;gap:6px}.chart-readout{height:25px;color:var(--muted);font-size:12px;margin-top:12px}#chart{height:340px;cursor:crosshair;touch-action:pan-y}.chart-legend{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:7px}
+.detail-tabs{display:flex;gap:35px;border-bottom:1px solid var(--line);margin:28px 0 20px;overflow:auto}.detail-tabs button{background:transparent;color:var(--muted);border-radius:0;padding:13px 3px;border-bottom:3px solid transparent;white-space:nowrap}.detail-tabs button.active{color:var(--green);border-bottom-color:var(--green)}
+.performance-panel{padding:24px}.range-block{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}.range-block span,.performance-stats span{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.range-block b,.performance-stats b{font-size:14px}.range-right{text-align:right}.range-track{height:5px;background:#343a38;border-radius:9px;position:relative;grid-column:1/3}.range-track i{position:absolute;width:9px;height:9px;background:#dce5e1;border-radius:50%;top:-2px;left:50%;transform:translateX(-50%)}
+.performance-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:28px}.fundamental-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:32px;padding:10px 22px}.fundamental-item{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.fundamental-item span{color:var(--muted)}.fundamental-item b{text-align:right}
+@media(max-width:800px){.performance-stats{grid-template-columns:repeat(3,1fr)}#chart{height:280px}}@media(max-width:550px){.fundamental-grid{grid-template-columns:1fr}.performance-stats{grid-template-columns:repeat(2,1fr)}.detail-tabs{gap:22px}.chart-toolbar{display:block}.chart-types{margin-top:10px}.main-chart{padding:12px}.detail-price-line strong{font-size:30px}}
+
+footer{padding:25px;text-align:center;color:var(--muted);border-top:1px solid var(--line);font-size:12px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}}@media(max-width:600px){header{gap:14px}nav{order:3;flex-basis:100%;overflow:auto}.grid,.metrics,.detail-grid{grid-template-columns:1fr}.stock-row{grid-template-columns:1fr .8fr}.stock-row .vol{display:none}.hero-price{font-size:30px}}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">Stock<span>Vision</span> AI</div>
-  <nav class="main-nav" aria-label="Main navigation">
-    <a class="nav-link active" href="/">Market Overview</a>
-    <a class="nav-link" href="/prediction.html">AI Prediction</a>
-  </nav>
-  <div class="status">● MARKET DATA + AI PREDICTION</div>
+ <div class="brand">Stock<span>Vision</span> AI</div>
+ <nav><a class="active" href="#explore">Explore</a><a href="#popular">Popular Stocks</a><a href="#traded">Most Traded</a><a href="#intraday">Intraday</a><a href="/prediction.html">AI Prediction</a></nav>
+ <div class="search"><input id="search" placeholder="Search Indian stocks (e.g. Reliance, TCS)…" autocomplete="off"><div id="suggestions" class="suggestions" hidden></div></div>
 </header>
-<main>
-  <div class="topbar">
-    <div>
-      <div class="eyebrow">AI-powered market insights</div>
-      <h1>Stock Market Dashboard</h1>
-      <p class="subtitle">Explore Indian NSE/BSE market data, historical prices, company fundamentals and experimental AI estimates.</p>
-    </div>
-    <div class="search" role="search">
-      <input id="symbol" value="TCS.NS" aria-label="Stock symbol" placeholder="Search Indian stock, e.g. TCS or Reliance">
-      <button id="loadBtn" onclick="loadAll()">Load Stock ↗</button>
-    </div>
-  </div>
-  <div id="searchResults" class="search-results" aria-live="polite"></div>
-  <div id="message" role="status">Connecting to StockVision services…</div>
-  <div class="notice">Market data is the latest available from the upstream provider and may be delayed. The API response time is not the exchange update time. AI estimates are experimental and are not financial advice.</div>
-
-  <div class="price-heading">
-    <div>
-      <div class="label" id="companyName">TCS.NS · Loading company</div>
-      <div class="big-price" id="marketPrice">—</div>
-    </div>
-    <span class="pill" id="dayChange">Daily change —</span>
-    <span class="small" id="marketDate">Latest available trading date: —</span>
-  </div>
-
-  <section class="grid">
-    <div class="card"><div class="label">Previous Close</div><div class="value" id="previousClose">—</div><div class="small">Previous daily bar</div></div>
-    <div class="card"><div class="label">Day Open</div><div class="value" id="openPrice">—</div><div class="small">Reported daily open</div></div>
-    <div class="card"><div class="label">Day High / Low</div><div class="value" id="highLow">—</div><div class="small">High / low for latest daily bar</div></div>
-    <div class="card"><div class="label">Volume</div><div class="value" id="volume">—</div><div class="small">Shares reported for latest daily bar</div></div>
-  </section>
-
-  <h2 class="section-title">Historical Price Chart <small id="chartMeta">Daily close</small></h2>
-  <div class="chart-layout">
-    <section class="card chart-card">
-      <div class="chart-controls" aria-label="Historical period">
-        <button class="period-btn" data-period="5d">1W</button>
-        <button class="period-btn active" data-period="1mo">1M</button>
-        <button class="period-btn" data-period="6mo">6M</button>
-        <button class="period-btn" data-period="1y">1Y</button>
-        <button class="period-btn" data-period="5y">5Y</button>
-      </div>
-      <canvas id="historyChart" aria-label="Historical closing price chart"></canvas>
-      <div class="small">Daily closing prices. Chart period controls request historical data from the provider.</div>
-    </section>
-    <aside class="card">
-      <div class="label">52-Week Range</div>
-      <div class="stats-list">
-        <div class="stat-row"><span>52-week high</span><span id="weekHigh">—</span></div>
-        <div class="stat-row"><span>52-week low</span><span id="weekLow">—</span></div>
-        <div class="stat-row"><span>Market cap</span><span id="marketCap">—</span></div>
-        <div class="stat-row"><span>Currency</span><span id="currency">—</span></div>
-      </div>
-      <h3 class="section-title">AI Prediction</h3>
-      <div class="label">Predicted next close</div><div class="value green" id="predicted">—</div>
-      <div class="label">Predicted return</div><div class="value" id="predictedReturn">—</div>
-      <div class="small" id="predictionNote">Experimental model estimate</div>
-    </aside>
-  </div>
-
-  <h2 class="section-title">Company Fundamentals</h2>
-  <section class="fundamentals">
-    <div class="card fundamental"><div class="label">Sector</div><div class="value" id="sector">—</div></div>
-    <div class="card fundamental"><div class="label">Industry</div><div class="value" id="industry">—</div></div>
-    <div class="card fundamental"><div class="label">Trailing P/E</div><div class="value" id="pe">—</div></div>
-    <div class="card fundamental"><div class="label">EPS</div><div class="value" id="eps">—</div></div>
-    <div class="card fundamental"><div class="label">Forward P/E</div><div class="value" id="forwardPe">—</div></div>
-    <div class="card fundamental"><div class="label">Dividend Yield</div><div class="value" id="dividend">—</div></div>
-    <div class="card fundamental"><div class="label">Exchange</div><div class="value" id="exchange">—</div></div>
-    <div class="card fundamental"><div class="label">Model</div><div class="value" id="model">—</div></div>
-  </section>
-  <section class="company-grid" style="margin-top:14px">
-    <div class="card"><div class="label">Business Overview</div><p id="businessSummary" class="company-summary">Company description will appear here when available.</p><a id="website" class="small" href="#" target="_blank" rel="noopener" hidden>Company website ↗</a></div>
-    <div class="card"><div class="label">Model Performance</div><div class="stats-list">
-      <div class="stat-row"><span>Test MAE</span><span id="mae">—</span></div>
-      <div class="stat-row"><span>Test RMSE</span><span id="rmse">—</span></div>
-      <div class="stat-row"><span>Model evaluation</span><span>Historical test errors</span></div>
-    </div><p class="small">Lower error is generally better. Historical error does not guarantee future performance.</p></div>
-  </section>
+<main id="explore">
+ <div class="ticker" id="indices"><span><b>NIFTY 50</b> Market index data loads when available</span><span><b>SENSEX</b> Indian equities</span><span><b>NSE / BSE</b> ₹ INR</span></div>
+ <h1>Explore Indian Stocks</h1><p class="sub">Discover popular companies, actively traded shares and intraday movers across supported Indian listings.</p>
+ <div class="notice">Market data is supplied by Yahoo Finance through yfinance and may be delayed or unavailable. “Most traded” and “Top intraday” are ranked only within the tracked stock list below, not the entire NSE/BSE market. This is an educational project, not investment advice.</div>
+ <div class="section-head" id="popular"><h2>Popular Stocks</h2><small>Selected Indian large-cap stocks</small></div>
+ <div class="grid" id="popularGrid"><div class="empty">Loading Indian stocks…</div></div>
+ <div class="layout">
+  <section id="traded"><div class="section-head"><h2>Most Traded Stocks</h2><small>By reported daily volume</small></div><div class="rows" id="tradedRows"><div class="empty">Loading volume data…</div></div></section>
+  <section id="intraday"><div class="section-head"><h2>Top Intraday Stocks</h2><small>By daily percentage change</small></div><div class="rows" id="intradayRows"><div class="empty">Loading movers…</div></div></section>
+ </div>
+ <section id="stockDetail" hidden>
+<button class="back-btn" id="backExplore">← Back to Explore</button>
+<div class="detail-hero"><div class="detail-company"><div id="detailLogo"></div><div><div class="detail-symbol" id="detailSymbol">— · NSE</div><h1 id="detailName">—</h1></div></div><div class="detail-price-line"><strong id="detailPrice">—</strong><span id="detailChange" class="change">—</span><span class="muted" id="detailDate"></span></div></div>
+<div class="chart-wrap main-chart"><div class="chart-toolbar"><div class="periods" id="detailPeriods">
+<button data-period="1d">1D</button><button data-period="5d">1W</button><button class="active" data-period="1mo">1M</button><button data-period="3mo">3M</button><button data-period="6mo">6M</button><button data-period="1y">1Y</button><button data-period="3y">3Y</button><button data-period="5y">5Y</button><button data-period="max">All</button></div><div class="chart-types"><button class="active" data-chart="line">Line</button><button data-chart="candle">Candles</button></div></div><div class="chart-readout" id="chartReadout">Historical closing prices · INR</div><canvas id="chart"></canvas><div class="chart-legend"><span>Historical prices · INR</span><span id="chartRange"></span></div></div>
+<div class="detail-tabs" id="detailTabs"><button class="active" data-tab="overview">Overview</button><button data-tab="technicals">Technicals</button><button data-tab="news">News</button><button data-tab="events">Events</button></div>
+<div id="tabOverview" class="tab-content"><div class="section-head"><h2>Performance</h2><small>Latest available market session</small></div>
+<div class="performance-panel panel"><div class="range-block"><div><span>Today's low</span><b id="todayLow">—</b></div><div class="range-right"><span>Today's high</span><b id="todayHigh">—</b></div><div class="range-track"><i id="todayMarker"></i></div></div>
+<div class="range-block"><div><span>52-week low</span><b id="yearLow">—</b></div><div class="range-right"><span>52-week high</span><b id="yearHigh">—</b></div><div class="range-track"><i id="yearMarker"></i></div></div>
+<div class="performance-stats"><div><span>Open price</span><b id="open">—</b></div><div><span>Previous close</span><b id="prev">—</b></div><div><span>Volume</span><b id="volume">—</b></div><div><span>Market cap</span><b id="detailMarketCap">—</b></div><div><span>Day high</span><b id="dayHigh">—</b></div><div><span>Day low</span><b id="dayLow">—</b></div></div></div>
+<div class="section-head"><h2>Fundamentals</h2><small>Company financial information</small></div><div class="fundamental-grid panel" id="fundamentals"></div></div>
+<div id="tabTechnicals" class="tab-content" hidden><div class="section-head"><h2>Technicals</h2><small>Calculated from historical prices</small></div><div class="fundamental-grid panel" id="technicals"></div></div>
+<div id="tabNews" class="tab-content" hidden><div class="panel empty">Company news feed is not connected yet.</div></div><div id="tabEvents" class="tab-content" hidden><div class="panel empty">Corporate events feed is not connected yet.</div></div>
+</section>
+ <div class="notice" id="status">Connecting to StockVision market service…</div>
 </main>
-<footer>Educational demonstration only. Predictions are uncertain and are not financial advice.<br>Market data coverage, freshness and fundamentals depend on the upstream provider.</footer>
-
+<footer>StockVision AI · Indian Equity Market Explorer · Experimental educational project</footer>
 <script>
-const $ = id => document.getElementById(id);
-let currentPeriod = "1mo";
-let lastHistory = [];
-let resizeTimer;
+const $=id=>document.getElementById(id);
+const universe=[
+ ["RELIANCE.NS","Reliance Industries"],["TCS.NS","Tata Consultancy Services"],["HDFCBANK.NS","HDFC Bank"],["ICICIBANK.NS","ICICI Bank"],["INFY.NS","Infosys"],["SBIN.NS","State Bank of India"],["BHARTIARTL.NS","Bharti Airtel"],["ITC.NS","ITC"],["LT.NS","Larsen & Toubro"],["AXISBANK.NS","Axis Bank"],["KOTAKBANK.NS","Kotak Mahindra Bank"],["HINDUNILVR.NS","Hindustan Unilever"],["BAJFINANCE.NS","Bajaj Finance"],["MARUTI.NS","Maruti Suzuki"],["TATAMOTORS.NS","Tata Motors"],["WIPRO.NS","Wipro"],["ADANIENT.NS","Adani Enterprises"],["SUNPHARMA.NS","Sun Pharma"],["TATASTEEL.NS","Tata Steel"],["ONGC.NS","ONGC"]
+];
+const logoDomains={
+ "RELIANCE.NS":"ril.com","TCS.NS":"tcs.com","HDFCBANK.NS":"hdfcbank.com",
+ "ICICIBANK.NS":"icicibank.com","INFY.NS":"infosys.com","SBIN.NS":"sbi.co.in",
+ "BHARTIARTL.NS":"airtel.in","ITC.NS":"itcportal.com","LT.NS":"larsentoubro.com",
+ "AXISBANK.NS":"axisbank.com","KOTAKBANK.NS":"kotak.com","HINDUNILVR.NS":"hul.co.in",
+ "BAJFINANCE.NS":"bajajfinserv.in","MARUTI.NS":"marutisuzuki.com","TATAMOTORS.NS":"tatamotors.com",
+ "WIPRO.NS":"wipro.com","ADANIENT.NS":"adanienterprises.com","SUNPHARMA.NS":"sunpharma.com",
+ "TATASTEEL.NS":"tatasteel.com","ONGC.NS":"ongcindia.com"
+};
+function logoMarkup(symbol,name){
+ const domain=logoDomains[symbol];
+ const initials=(name||symbol).split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+ const fallback=`<span class="logo-fallback">${initials}</span>`;
+ if(!domain) return `<div class="logo-box">${fallback}</div>`;
+ const url=`https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+ return `<div class="logo-box"><img src="${url}" alt="${name} logo" loading="lazy" onerror="this.parentElement.innerHTML='${fallback.replace(/'/g, "\\'")}'"></div>`;
+}
+let quotes=[], activeSymbol="TCS.NS", period="1mo", searchTimer;
+const money=v=>v==null||!Number.isFinite(Number(v))?"—":new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(v));
+const compact=v=>v==null?"—":new Intl.NumberFormat("en-IN",{notation:"compact",maximumFractionDigits:2}).format(Number(v));
+const pct=v=>Number.isFinite(Number(v))?`${Number(v)>0?"+":""}${Number(v).toFixed(2)}%`:"—";
+const cls=v=>Number(v)>=0?"up":"down";
+const API_CACHE_PREFIX="stockvision_api_cache_v1:";
+function cacheTTL(url){
+ if(url.includes("/api/market/quote")) return 60 * 1000;
+ if(url.includes("/api/market/history")) return 5 * 60 * 1000;
+ if(url.includes("/api/market/company")) return 30 * 60 * 1000;
+ if(url.includes("/api/market/search")) return 5 * 60 * 1000;
+ return 0;
+}
+function readApiCache(key,ttl){
+ try{
+  const raw=sessionStorage.getItem(API_CACHE_PREFIX+key);
+  if(!raw) return null;
+  const item=JSON.parse(raw);
+  if(!item || !item.savedAt || Date.now()-item.savedAt>ttl) return null;
+  return item.data;
+ }catch{return null}
+}
+function writeApiCache(key,data){
+ try{sessionStorage.setItem(API_CACHE_PREFIX+key,JSON.stringify({savedAt:Date.now(),data}))}catch{}
+}
+async function api(url){
+ const ttl=cacheTTL(url);
+ const key=url;
+ if(ttl){
+  const cached=readApiCache(key,ttl);
+  if(cached!==null) return cached;
+ }
+ const r=await fetch(url);
+ if(!r.ok){let d="";try{d=(await r.json()).detail||r.statusText}catch{}throw Error(d||`HTTP ${r.status}`)}
+ const data=await r.json();
+ if(ttl) writeApiCache(key,data);
+ return data;
+}
+async function getQuote(symbol){const q=await api(`/api/market/quote?symbol=${encodeURIComponent(symbol)}`);if(q.currency && q.currency!=="INR")throw Error("Non-INR listing rejected");return q}
+function card(q){const name=(universe.find(x=>x[0]===q.symbol)||[])[1]||q.symbol;return `<article class="stock-card" onclick="showStock('${q.symbol}')">${logoMarkup(q.symbol,name)}<div class="symbol">${q.symbol.replace('.NS','').replace('.BO','')}</div><div class="company">${name}</div><div class="price">${money(q.close)}</div><div class="change ${cls(q.change_percent)}">${pct(q.change_percent)} today</div><div class="meta">Volume ${compact(q.volume)}</div></article>`}
+function row(q,extra){const name=(universe.find(x=>x[0]===q.symbol)||[])[1]||q.symbol;return `<div class="stock-row" onclick="showStock('${q.symbol}')"><div class="row-company">${logoMarkup(q.symbol,name)}<div><b>${q.symbol.replace('.NS','')}</b><div class="muted">${name}</div></div></div><div class="right"><b>${money(q.close)}</b><div class="change ${cls(q.change_percent)}">${pct(q.change_percent)}</div></div><div class="right vol"><b>${extra}</b><div class="muted">${extra==="—"?"":"reported volume"}</div></div></div>`}
+async function loadExplore(){const results=await Promise.allSettled(universe.map(x=>getQuote(x[0])));quotes=results.filter(x=>x.status==="fulfilled").map(x=>x.value);const failed=results.length-quotes.length;
+$("popularGrid").innerHTML=quotes.slice(0,8).map(card).join("")||'<div class="empty">No Indian stock quotes available right now.</div>';
+const traded=[...quotes].sort((a,b)=>(b.volume||0)-(a.volume||0)).slice(0,6);
+$("tradedRows").innerHTML=traded.map(q=>row(q,compact(q.volume))).join("")||'<div class="empty">Volume data unavailable.</div>';
+const movers=[...quotes].sort((a,b)=>Math.abs(b.change_percent||0)-Math.abs(a.change_percent||0)).slice(0,6);
+$("intradayRows").innerHTML=movers.map(q=>row(q,pct(q.change_percent))).join("")||'<div class="empty">Intraday data unavailable.</div>';
+$("status").textContent=`Loaded ${quotes.length} of ${universe.length} tracked Indian stocks.${failed?` ${failed} quotes unavailable from provider.`:""} Data may be delayed. Quotes are cached for 1 minute to make page navigation faster.`;
+}
 
-function fmtMoney(value, currency="INR") {
-  if (value === null || value === undefined || !Number.isFinite(Number(value))) return "—";
-  try {
-    return new Intl.NumberFormat("en-IN", {style:"currency",currency,maximumFractionDigits:2}).format(Number(value));
-  } catch { return "₹" + Number(value).toLocaleString("en-IN",{maximumFractionDigits:2}); }
+let chartRows=[],chartMode="line";
+function toggleExplore(show){["indices","popular","traded","intraday"].forEach(id=>{const e=$(id);if(e)e.hidden=!show});const t=document.querySelector("main>h1"),s=document.querySelector("main>.sub"),n=document.querySelector("main>.notice");if(t)t.hidden=!show;if(s)s.hidden=!show;if(n)n.hidden=!show;}
+function setMarker(id,lo,hi,v){const e=$(id);if(!e)return;const a=Number(lo),b=Number(hi),z=Number(v);e.style.left=Number.isFinite(a)&&Number.isFinite(b)&&b>a&&Number.isFinite(z)?Math.max(0,Math.min(100,(z-a)/(b-a)*100))+"%":"50%";}
+async function showStock(symbol){
+ activeSymbol=symbol;toggleExplore(false);$("stockDetail").hidden=false;const name=(universe.find(x=>x[0]===symbol)||[])[1]||symbol;
+ $("detailSymbol").textContent=`${symbol.replace(/\\.NS$|\\.BO$/,"")} · ${symbol.endsWith(".BO")?"BSE":"NSE"}`;$("detailName").textContent=name;$("detailLogo").innerHTML=logoMarkup(symbol,name);$("detailPrice").textContent="Loading…";$("chartReadout").textContent="Loading historical prices…";
+ try{const q=await getQuote(symbol);$("detailPrice").textContent=money(q.close);$("detailChange").textContent=`${money(q.change)} (${pct(q.change_percent)})`;$("detailChange").className=`change ${cls(q.change_percent)}`;$("detailDate").textContent=`Latest available trading date: ${q.latest_date||"—"}`;
+ $("prev").textContent=money(q.previous_close);$("open").textContent=money(q.open);$("dayHigh").textContent=money(q.high);$("dayLow").textContent=money(q.low);$("volume").textContent=compact(q.volume);$("todayLow").textContent=money(q.low);$("todayHigh").textContent=money(q.high);setMarker("todayMarker",q.low,q.high,q.close);
+ await Promise.all([loadHistory(symbol,period),loadFundamentals(symbol)]);}catch(e){$("detailPrice").textContent="Unavailable";$("status").textContent=`Could not load ${symbol}: ${e.message}`;}
 }
-function fmtNumber(value) {
-  if (value === null || value === undefined || !Number.isFinite(Number(value))) return "—";
-  return new Intl.NumberFormat("en-IN",{maximumFractionDigits:2}).format(Number(value));
+async function loadHistory(symbol,p){try{const d=await api(`/api/market/history?symbol=${encodeURIComponent(symbol)}&period=${p}&interval=${p==="1d"?"5m":"1d"}`);chartRows=d.prices||[];drawChart(chartRows);calculateTechnicals(chartRows);}catch(e){$("chartReadout").textContent=`Chart unavailable: ${e.message}`;}}
+function drawChart(rows){
+ const c=$("chart"),w=c.clientWidth||900,h=340,dpr=devicePixelRatio||1;c.width=w*dpr;c.height=h*dpr;const x=c.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,w,h);
+ const d=rows.map(a=>({...a,v:Number(a.close)})).filter(a=>Number.isFinite(a.v));if(!d.length){x.fillStyle="#a1aaa7";x.fillText("No historical prices available",18,30);$("chartReadout").textContent="No chart data for this period";return;}
+ const vs=d.map(a=>a.v),lo=Math.min(...vs),hi=Math.max(...vs),sp=hi-lo||Math.max(1,hi*.02),mn=lo-sp*.12,mx=hi+sp*.12,L=70,R=18,T=18,B=34,xx=i=>L+i/(d.length-1||1)*(w-L-R),yy=v=>T+(mx-v)/(mx-mn)*(h-T-B);
+ x.font="11px Arial";x.strokeStyle="#303a37";x.fillStyle="#9ba8a3";for(let i=0;i<5;i++){let y=T+i*(h-T-B)/4;x.beginPath();x.moveTo(L,y);x.lineTo(w-R,y);x.stroke();x.fillText(money(mx-i*(mx-mn)/4),3,y+4);}
+ let g=x.createLinearGradient(0,T,0,h-B);g.addColorStop(0,"rgba(0,200,150,.2)");g.addColorStop(1,"rgba(0,200,150,0)");x.beginPath();d.forEach((a,i)=>i?x.lineTo(xx(i),yy(a.v)):x.moveTo(xx(i),yy(a.v)));x.lineTo(xx(d.length-1),h-B);x.lineTo(xx(0),h-B);x.closePath();x.fillStyle=g;x.fill();
+ if(chartMode==="candle"&&d.some(a=>a.open!=null&&a.high!=null&&a.low!=null)){let cw=Math.max(2,Math.min(9,(w-L-R)/d.length*.6));d.forEach((a,i)=>{let o=Number(a.open),hh=Number(a.high),ll=Number(a.low);if(![o,hh,ll].every(Number.isFinite))return;let col=a.v>=o?"#00c896":"#ff654f";x.strokeStyle=col;x.fillStyle=col;x.beginPath();x.moveTo(xx(i),yy(hh));x.lineTo(xx(i),yy(ll));x.stroke();x.fillRect(xx(i)-cw/2,Math.min(yy(o),yy(a.v)),cw,Math.max(1,Math.abs(yy(o)-yy(a.v))));});}
+ else{x.beginPath();d.forEach((a,i)=>i?x.lineTo(xx(i),yy(a.v)):x.moveTo(xx(i),yy(a.v)));x.strokeStyle="#00c896";x.lineWidth=2.5;x.lineJoin="round";x.stroke();}
+ const label=a=>{let dt=new Date(a.date||a.datetime||a.timestamp);return isNaN(dt)?String(a.date||""):dt.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"2-digit"});};[0,Math.floor((d.length-1)/2),d.length-1].forEach(i=>{let t=label(d[i]);x.fillStyle="#9ba8a3";x.fillText(t,Math.max(L,Math.min(w-R-x.measureText(t).width,xx(i)-x.measureText(t).width/2)),h-10);});
+ $("chartReadout").textContent=`Latest close: ${money(d[d.length-1].v)} · ${d.length} data points`;$("chartRange").textContent=`${label(d[0])} — ${label(d[d.length-1])}`;c._plot={d,xx,L,w};
 }
-function fmtCompact(value) {
-  if (value === null || value === undefined || !Number.isFinite(Number(value))) return "—";
-  return new Intl.NumberFormat("en-IN",{notation:"compact",maximumFractionDigits:2}).format(Number(value));
-}
-function setText(id, value) { $(id).textContent = value === null || value === undefined || value === "" ? "—" : value; }
-function showMessage(text, error=false) { $("message").textContent=text; $("message").className=error?"error":""; }
-function safeSymbol() { return $("symbol").value.trim().toUpperCase(); }
-function isIndianSymbol(symbol) { return /\.(NS|BO)$/.test(symbol); }
-function clearPrediction(note="AI prediction is currently available only for TCS.NS.") {
-  setText("predicted", "—");
-  setText("predictedReturn", "—");
-  $("predictedReturn").className = "value";
-  setText("predictionNote", note);
-  setText("model", "Unavailable");
-  setText("mae", "—");
-  setText("rmse", "—");
-}
-
-async function getJson(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    let detail = "";
-    try { const body = await response.json(); detail = body.detail || JSON.stringify(body); }
-    catch { detail = await response.text(); }
-    throw new Error(detail || `Request failed (${response.status})`);
-  }
-  return response.json();
-}
-async function loadAll() {
-  const symbol = safeSymbol();
-  if (!symbol) { showMessage("Please enter an Indian stock ticker, e.g. TCS.NS.", true); return; }
-  if (!isIndianSymbol(symbol)) {
-    showMessage("Indian stocks only. Choose an NSE (.NS) or BSE (.BO) result from search.", true);
-    clearPrediction("Select an Indian NSE/BSE stock. AI model currently trained for TCS.NS only.");
-    return;
-  }
-  $("symbol").value = symbol;
-  clearPrediction(symbol === "TCS.NS" ? "Loading TCS model estimate…" : "AI prediction unavailable: this stock has not been trained yet.");
-  $("loadBtn").disabled = true;
-  showMessage(`Loading ${symbol} market data, history, company information and AI prediction…`);
-  try {
-    const quote = await getJson(`/api/market/quote?symbol=${encodeURIComponent(symbol)}`);
-    renderQuote(quote);
-    const results = await Promise.allSettled([
-      loadHistory(symbol, currentPeriod),
-      loadCompany(symbol),
-      loadPrediction(symbol)
-    ]);
-    const failed = results.filter(x => x.status === "rejected");
-    if (failed.length) {
-      showMessage(`${symbol} quote loaded. Some panels could not load: ${failed.map(x=>x.reason.message).join(" · ")}`, true);
-    } else {
-      showMessage(`${symbol} loaded. Latest available daily data: ${quote.latest_date}.`);
-    }
-  } catch (error) {
-    showMessage(`Could not load ${symbol}: ${error.message}`, true);
-  } finally { $("loadBtn").disabled = false; }
-}
-function renderQuote(q) {
-  const currency = "INR";
-  setText("companyName", `${q.symbol} · ${q.currency || "Currency unavailable"}`);
-  setText("marketPrice", fmtMoney(q.close,currency));
-  setText("previousClose",fmtMoney(q.previous_close,currency));
-  setText("openPrice",fmtMoney(q.open,currency));
-  setText("highLow",`${fmtMoney(q.high,currency)} / ${fmtMoney(q.low,currency)}`);
-  setText("volume",fmtCompact(q.volume));
-  setText("marketDate",`Latest available trading date: ${q.latest_date || "—"}`);
-  setText("weekHigh",fmtMoney(q.fifty_two_week_high,currency));
-  setText("weekLow",fmtMoney(q.fifty_two_week_low,currency));
-  setText("marketCap",q.market_cap ? fmtMoney(q.market_cap, "INR") : "—");
-  setText("currency",currency);
-  const change = Number(q.change), pct = Number(q.change_percent);
-  const valid = Number.isFinite(change) && Number.isFinite(pct);
-  $("dayChange").textContent = valid ? `${change>=0?"+":""}${fmtMoney(change,currency)} (${pct>=0?"+":""}${pct.toFixed(2)}%)` : "Daily change —";
-  $("dayChange").className = "pill" + (valid && change<0 ? " red" : "");
-}
-async function loadHistory(symbol, period) {
-  const data = await getJson(`/api/market/history?symbol=${encodeURIComponent(symbol)}&period=${encodeURIComponent(period)}&interval=1d`);
-  lastHistory = Array.isArray(data.prices) ? data.prices : [];
-  setText("chartMeta",`${data.count || lastHistory.length} daily bars · ${period}`);
-  drawHistoryChart(lastHistory);
-}
-async function loadCompany(symbol) {
-  const c = await getJson(`/api/market/company?symbol=${encodeURIComponent(symbol)}`);
-  setText("companyName",`${c.name || c.symbol} · ${c.symbol}`);
-  setText("sector",c.sector);
-  setText("industry",c.industry);
-  setText("pe",fmtNumber(c.trailing_pe));
-  setText("eps",c.eps == null ? "—" : fmtMoney(c.eps,c.currency || "INR"));
-  setText("forwardPe",fmtNumber(c.forward_pe));
-  setText("dividend",c.dividend_yield == null ? "—" : `${(Number(c.dividend_yield)*100).toFixed(2)}%`);
-  setText("exchange",c.exchange);
-  $("businessSummary").textContent = c.business_summary || "No company description is available from the provider.";
-  const link=$("website");
-  if (c.website && /^https?:\/\//i.test(c.website)) { link.href=c.website; link.hidden=false; } else { link.hidden=true; }
-}
-async function loadPrediction(symbol) {
-  if (symbol !== "TCS.NS") {
-    clearPrediction("AI prediction unavailable for this stock. The current model is trained for TCS.NS only.");
-    return;
-  }
-  try {
-    const data = await getJson(`/api/stock/predict?symbol=${encodeURIComponent(symbol)}`);
-    setText("predicted",fmtMoney(data.predicted_next_close, "INR"));
-    const pct=Number(data.predicted_return_percent);
-    setText("predictedReturn",Number.isFinite(pct)?`${pct>0?"+":""}${pct.toFixed(3)}%`:"—");
-    $("predictedReturn").className="value"+(pct<0?" red":" green");
-    setText("predictionNote",data.note || "Experimental model estimate; not guaranteed.");
-    setText("model",data.model_type);
-    setText("mae",fmtMoney(data.mae, "INR"));
-    setText("rmse",fmtMoney(data.rmse, "INR"));
-  } catch (error) {
-    clearPrediction(`Prediction unavailable: ${error.message}`);
-    throw error;
-  }
-}
-function drawHistoryChart(rows) {
-  const canvas=$("historyChart"), rect=canvas.getBoundingClientRect();
-  if (!rect.width || !rows.length) return;
-  const ratio=window.devicePixelRatio||1, height=290, width=rect.width;
-  canvas.width=Math.floor(width*ratio); canvas.height=Math.floor(height*ratio);
-  const ctx=canvas.getContext("2d"); ctx.setTransform(ratio,0,0,ratio,0,0); ctx.clearRect(0,0,width,height);
-  const vals=rows.map(r=>Number(r.close)).filter(Number.isFinite);
-  if (!vals.length) { ctx.fillStyle="#8fa2bd";ctx.fillText("No chart data available",15,30);return; }
-  const pad={l:58,r:14,t:20,b:34}, plotW=width-pad.l-pad.r, plotH=height-pad.t-pad.b;
-  let min=Math.min(...vals), max=Math.max(...vals); if(min===max){min*=.99;max*=1.01;}
-  const extra=(max-min)*.08; min-=extra;max+=extra;
-  const x=i=>pad.l+(rows.length===1?plotW/2:i/(rows.length-1)*plotW);
-  const y=v=>pad.t+(max-v)/(max-min)*plotH;
-  ctx.font="11px Segoe UI";ctx.textAlign="right";ctx.textBaseline="middle";
-  for(let i=0;i<5;i++){const v=min+(max-min)*i/4, yy=y(v);ctx.strokeStyle="#253249";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(width-pad.r,yy);ctx.stroke();ctx.fillStyle="#8fa2bd";ctx.fillText("₹"+Math.round(v).toLocaleString("en-IN"),pad.l-9,yy);}
-  const gradient=ctx.createLinearGradient(0,pad.t,0,pad.t+plotH);gradient.addColorStop(0,"rgba(50,214,160,.22)");gradient.addColorStop(1,"rgba(50,214,160,0)");
-  ctx.beginPath();vals.forEach((v,i)=>{if(i===0)ctx.moveTo(x(i),y(v));else ctx.lineTo(x(i),y(v));});ctx.lineTo(x(vals.length-1),pad.t+plotH);ctx.lineTo(x(0),pad.t+plotH);ctx.closePath();ctx.fillStyle=gradient;ctx.fill();
-  ctx.beginPath();vals.forEach((v,i)=>{if(i===0)ctx.moveTo(x(i),y(v));else ctx.lineTo(x(i),y(v));});ctx.strokeStyle=vals[vals.length-1]>=vals[0]?"#32d6a0":"#ff8585";ctx.lineWidth=2.5;ctx.stroke();
-  const labels=[rows[0]?.date,rows[Math.floor((rows.length-1)/2)]?.date,rows[rows.length-1]?.date];
-  ctx.fillStyle="#8fa2bd";ctx.textAlign="left";ctx.textBaseline="alphabetic";ctx.fillText(labels[0]||"",pad.l,height-10);
-  ctx.textAlign="center";ctx.fillText(labels[1]||"",pad.l+plotW/2,height-10);
-  ctx.textAlign="right";ctx.fillText(labels[2]||"",width-pad.r,height-10);
-  const last=vals[vals.length-1];ctx.fillStyle="#edf3ff";ctx.textAlign="right";ctx.fillText("Latest close: "+fmtMoney(last,"INR"),width-pad.r,pad.t-5);
-}
-async function searchSymbols() {
-  const query=safeSymbol();
-  const box=$("searchResults"); box.replaceChildren();
-  if(!query) return;
-  try {
-    const data=await getJson(`/api/market/search?query=${encodeURIComponent(query)}`);
-    (data.results||[]).slice(0,6).forEach(item=>{
-      const btn=document.createElement("button");btn.className="secondary suggestion";
-      btn.textContent=`${item.symbol} · ${item.name}`;
-      btn.onclick=()=>{$("symbol").value=item.symbol;box.replaceChildren();loadAll();};
-      box.appendChild(btn);
-    });
-    if(!box.children.length){const hint=document.createElement("span");hint.className="small";hint.textContent="No Indian NSE/BSE match found. Try a company name or ticker.";box.appendChild(hint);}
-  } catch { /* Search suggestions are optional; direct ticker entry still works. */ }
-}
-document.querySelectorAll(".period-btn").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".period-btn").forEach(b=>b.classList.toggle("active",b===btn));
-  currentPeriod=btn.dataset.period;
-  loadHistory(safeSymbol(),currentPeriod).catch(err=>showMessage(`Could not load chart history: ${err.message}`,true));
-}));
-$("symbol").addEventListener("keydown",e=>{if(e.key==="Enter")loadAll();});
-$("symbol").addEventListener("input",()=>{
-  clearTimeout(resizeTimer);resizeTimer=setTimeout(searchSymbols,250);
-});
-window.addEventListener("resize",()=>drawHistoryChart(lastHistory));
-loadAll();
+function calculateTechnicals(rows){let a=rows.map(x=>Number(x.close)).filter(Number.isFinite),last=a.at(-1);if(!a.length)return;let avg=n=>a.slice(-n).reduce((s,v)=>s+v,0)/Math.min(n,a.length),ret=n=>a.length>n?pct((last/a[a.length-1-n]-1)*100):"—";let e=[["Latest close",money(last)],["5-period average",money(avg(5))],["20-period average",money(avg(20))],["5-period return",ret(5)],["20-period return",ret(20)],["Data points",a.length]];$("technicals").innerHTML=e.map(([k,v])=>`<div class="fundamental-item"><span>${k}</span><b>${v}</b></div>`).join("");}
+async function loadFundamentals(symbol){try{const c=await api(`/api/market/company?symbol=${encodeURIComponent(symbol)}`);const e=[["Market Cap",c.market_cap==null?"—":money(c.market_cap)],["P/E Ratio (TTM)",c.trailing_pe??"—"],["P/B Ratio",c.price_to_book??"—"],["Industry P/E",c.industry_pe??"—"],["Debt to Equity",c.debt_to_equity??"—"],["ROE",c.return_on_equity==null?"—":(Number(c.return_on_equity)*100).toFixed(2)+"%"],["EPS (TTM)",c.eps==null?"—":money(c.eps)],["Dividend Yield",c.dividend_yield==null?"—":(Number(c.dividend_yield)*100).toFixed(2)+"%"],["Book Value",c.book_value==null?"—":money(c.book_value)],["Face Value",c.face_value??"—"],["Sector",c.sector??"—"],["Industry",c.industry??"—"]];$("fundamentals").innerHTML=e.map(([k,v])=>`<div class="fundamental-item"><span>${k}</span><b>${v??"—"}</b></div>`).join("");$("detailMarketCap").textContent=c.market_cap==null?"—":money(c.market_cap);$("yearLow").textContent=c.fifty_two_week_low==null?"—":money(c.fifty_two_week_low);$("yearHigh").textContent=c.fifty_two_week_high==null?"—":money(c.fifty_two_week_high);setMarker("yearMarker",c.fifty_two_week_low,c.fifty_two_week_high,Number($("detailPrice").textContent.replace(/[^0-9.]/g,"")));}catch(e){$("fundamentals").innerHTML=`<div class="empty">${e.message}</div>`;}}
+$("backExplore").addEventListener("click",()=>{$("stockDetail").hidden=true;toggleExplore(true);});
+document.querySelectorAll("#detailPeriods button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#detailPeriods button").forEach(x=>x.classList.toggle("active",x===b));period=b.dataset.period;loadHistory(activeSymbol,period);}));
+document.querySelectorAll(".chart-types button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".chart-types button").forEach(x=>x.classList.toggle("active",x===b));chartMode=b.dataset.chart;drawChart(chartRows);}));
+document.querySelectorAll("#detailTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#detailTabs button").forEach(x=>x.classList.toggle("active",x===b));let t=b.dataset.tab;document.querySelectorAll(".tab-content").forEach(x=>x.hidden=x.id!=="tab"+t[0].toUpperCase()+t.slice(1));}));
+$("chart").addEventListener("mousemove",e=>{let p=$("chart")._plot;if(!p)return;let rect=$("chart").getBoundingClientRect(),px=e.clientX-rect.left,i=Math.max(0,Math.min(p.d.length-1,Math.round((px-p.L)/(p.w-p.L-18)*(p.d.length-1)))),a=p.d[i];$("chartReadout").textContent=`${a.date||a.datetime||""} · ${money(a.v)}`;});
+document.querySelectorAll("#detailPeriods button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#detailPeriods button").forEach(x=>x.classList.toggle("active",x===b));period=b.dataset.period;loadHistory(activeSymbol,period)}));
+$("search").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(searchStocks,300)});
+async function searchStocks(){const q=$("search").value.trim(),box=$("suggestions");if(q.length<2){box.hidden=true;return}try{const d=await api(`/api/market/search?query=${encodeURIComponent(q)}`);const found=(d.results||[]).filter(x=>/\.NS$|\.BO$/i.test(x.symbol));box.innerHTML=found.slice(0,8).map(x=>`<button data-symbol="${x.symbol}"><b>${x.symbol}</b> · ${x.name}</button>`).join("")||'<div class="empty">No supported Indian listing found.</div>';box.hidden=false;box.querySelectorAll("button[data-symbol]").forEach(b=>b.onclick=()=>{const s=b.dataset.symbol;$("search").value=s;box.hidden=true;showStock(s)})}catch{box.innerHTML='<div class="empty">Search unavailable. Try an NSE ticker such as TCS.NS.</div>';box.hidden=false}}
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))$("suggestions").hidden=true});
+window.addEventListener("resize",()=>{if(!$("stockDetail").hidden&&chartRows.length)drawChart(chartRows);});
+loadExplore();
 </script>
-</body>
-</html>
+</body></html>
